@@ -94,11 +94,11 @@ public class AdvertiserClient {
     /**
      * Generates a signature for a REST API request
      *
-     * @param httpVerb GET, POST, PUT or DELETE
-     * @param uri resource URI that follows API version date 2011-03-01. e.g. for http://api.zanox.com/xml/2011-03-01/adspaces URL, use /adspaces as
-     *        URI
+     * @param httpVerb  GET, POST, PUT or DELETE
+     * @param uri       resource URI that follows API version date 2011-03-01. e.g. for http://api.zanox.com/xml/2011-03-01/adspaces URL, use /adspaces as
+     *                  URI
      * @param timestamp timestamp string for REST authentication
-     * @param nonce nonce
+     * @param nonce     nonce
      * @param secretKey your secret key
      * @return REST signature
      * @throws java.security.GeneralSecurityException
@@ -107,7 +107,6 @@ public class AdvertiserClient {
         String stringToSign = httpVerb + uri.toLowerCase() + timestamp + nonce;
         return getSignature(stringToSign, secretKey);
     }
-
 
 
     private static String getSignature(String stringToSign, String secretKey) throws GeneralSecurityException {
