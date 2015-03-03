@@ -11,4 +11,4 @@ Ask your contact person from zanox for them.
 mvn install
 
 #Run
-java -jar target/advertiser-api-client-1.0-SNAPSHOT.jar
+java -jar target/advertiser-api-client-1.0-SNAPSHOT.jar CONNECT_ID SECRET_KEY

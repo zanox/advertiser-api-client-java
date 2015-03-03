@@ -26,7 +26,7 @@ import java.util.Calendar;
 public class AdvertiserClient {
 
     private final static String APP_URL = "http://l-ws-023.zanox-live.de:8080/advertiser-api/report";
-    private final static String BASE_REST_APP = "/program/";
+    private final static String BASE_REST_APP = "/2015-03-01/program/";
     private final static String PROGRAM_ID = "1803";
     private static String params = "?groupby=adspace&fromdate={0}&todate={1}";
     private static String auth = "&connectid={0}&date={1}&nonce={2}&signature={3}";
