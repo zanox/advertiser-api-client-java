@@ -28,18 +28,22 @@ public class AdvertiserClient {
     private final static String BASE_REST_APP = "/program/";
     private final static String PROGRAM_ID = "1803";
     private static String params = "?groupby=adspace&fromdate={0}&todate={1}";
-
-    private final static String CONNECT_ID = "92D676F47B42F2819102E7A"; //for program 1803
-    private final static String SECRET_KEY = "b48a9A63Af80b9D47+8ae84a3929776ba/9479fCE46"; //for program 1803
     private static String auth = "&connectid={0}&date={1}&nonce={2}&signature={3}";
 
-
     public static void main(String[] args) throws GeneralSecurityException {
+
+        if(args.length != 2) {
+            System.err.println("Usage: java -jar advertiser-api-client-1.0-SNAPSHOT.jar CONNECT_ID SECRET_KEY");
+            System.exit(1);
+        }
+
+        String connectId = args[0];
+        String secretKey = args[1];
 
         Client client = ClientBuilder.newBuilder().register(JacksonJsonProvider.class).build();
 
         params = fillTheParams();
-        auth = fillTheAuthorization();
+        auth = fillTheAuthorization(connectId, secretKey);
 
         WebTarget target = client.target(APP_URL + BASE_REST_APP + PROGRAM_ID + params + auth);
 
@@ -51,11 +55,11 @@ public class AdvertiserClient {
 
     }
 
-    private static String fillTheAuthorization() throws GeneralSecurityException {
+    private static String fillTheAuthorization(String connectId, String secretKey) throws GeneralSecurityException {
         String restTs = getRestTimestamp();
         String restNonce = generateNonce();
-        String restSignature = getRestSignature("GET", BASE_REST_APP + PROGRAM_ID, restTs, restNonce, SECRET_KEY);
-        return MessageFormat.format(auth, CONNECT_ID, restTs, restNonce, restSignature);
+        String restSignature = getRestSignature("GET", BASE_REST_APP + PROGRAM_ID, restTs, restNonce, secretKey);
+        return MessageFormat.format(auth, connectId, restTs, restNonce, restSignature);
     }
 
     private static String fillTheParams() {
