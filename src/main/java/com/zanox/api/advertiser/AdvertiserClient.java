@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
+import java.util.Calendar;
 
 public class AdvertiserClient {
 
@@ -64,8 +65,9 @@ public class AdvertiserClient {
 
     private static String fillTheParams() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String toDate = sdf.format(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
-        String fromDate = sdf.format(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 20); //20 days
+        Date now = new Date();
+        String toDate = sdf.format(addDays(now, -1));
+        String fromDate = sdf.format(addDays(now, -31));
         return MessageFormat.format(params, fromDate, toDate);
     }
 
@@ -139,6 +141,13 @@ public class AdvertiserClient {
         SimpleDateFormat df = new SimpleDateFormat(dateFormat, Locale.US);
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         return df.format(new Date());
+    }
+
+    public static Date addDays(Date baseDate, int daysToAdd) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(baseDate);
+        calendar.add(Calendar.DAY_OF_YEAR, daysToAdd);
+        return calendar.getTime();
     }
 
 }
