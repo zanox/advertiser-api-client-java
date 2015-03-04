@@ -25,7 +25,7 @@ import java.util.Calendar;
 
 public class AdvertiserClient {
 
-    private final static String APP_URL = "http://l-ws-023.zanox-live.de:8080/advertiser-api/report";
+    private final static String APP_URL = "http://advertiser.api.zanox.com/advertiser-api/report";
     private final static String BASE_REST_APP = "/2015-03-01/program/";
     private final static String PROGRAM_ID = "1803";
     private static String params = "?groupby=adspace&fromdate={0}&todate={1}";
@@ -33,7 +33,7 @@ public class AdvertiserClient {
 
     public static void main(String[] args) throws GeneralSecurityException {
 
-        if(args.length != 2) {
+        if (args.length != 2) {
             System.err.println("Usage: java -jar advertiser-api-client-1.0-SNAPSHOT.jar CONNECT_ID SECRET_KEY");
             System.exit(1);
         }
