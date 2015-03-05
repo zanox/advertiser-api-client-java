@@ -1,6 +1,5 @@
 package com.zanox.api.advertiser;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.apache.commons.codec.binary.Base64;
@@ -8,42 +7,44 @@ import org.apache.commons.codec.binary.Base64;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
-import java.util.TimeZone;
-import java.util.Calendar;
+import java.util.*;
 
 public class AdvertiserClient {
 
     private final static String APP_URL = "http://advertiser.api.zanox.com/advertiser-api/report";
     private final static String BASE_REST_APP = "/2015-03-01/program/";
     private final static String PROGRAM_ID = "1803";
-    private static String params = "?groupby=adspace&fromdate={0}&todate={1}";
+    private final static int ARGUMENTS_NUMBER = 3;
+    private static String params = "?groupby={0}&fromdate={1}&todate={2}";
     private static String auth = "&connectid={0}&date={1}&nonce={2}&signature={3}";
 
     public static void main(String[] args) throws GeneralSecurityException {
 
-        if (args.length != 2) {
-            System.err.println("Usage: java -jar advertiser-api-client-1.0-SNAPSHOT.jar CONNECT_ID SECRET_KEY");
+        if (args.length != ARGUMENTS_NUMBER) {
+            System.err.println("Wrong number of arguments. Correct usage: java -jar advertiser-api-client-1.0-SNAPSHOT.jar CONNECT_ID SECRET_KEY GROUP_BY");
             System.exit(1);
         }
 
         String connectId = args[0];
         String secretKey = args[1];
+        String groupBy   = args[2];
+
+        if (!isGroupByValid(groupBy)) {
+            groupBy = "day";
+        }
 
         Client client = ClientBuilder.newBuilder().register(JacksonJsonProvider.class).build();
 
-        params = fillTheParams();
+        params = fillTheParams(groupBy);
         auth = fillTheAuthorization(connectId, secretKey);
 
         WebTarget target = client.target(APP_URL + BASE_REST_APP + PROGRAM_ID + params + auth);
@@ -53,8 +54,21 @@ public class AdvertiserClient {
         System.out.println(response.getStatus());
         JsonNode json = response.readEntity(JsonNode.class);
         System.out.println(json);
-
     }
+
+    private static boolean isGroupByValid(String groupBy) {
+        List<String> validGroupByList = Arrays.asList("day","month", "adspace", "admedium");
+        return validGroupByList.contains(groupBy);
+    }
+
+    /**
+     * Fills in authentication information
+     *
+     * @param connectId
+     * @param secretKey
+     * @return the String with filled in authentication information
+     * @throws GeneralSecurityException
+     */
 
     private static String fillTheAuthorization(String connectId, String secretKey) throws GeneralSecurityException {
         String restTs = getRestTimestamp();
@@ -63,14 +77,19 @@ public class AdvertiserClient {
         return MessageFormat.format(auth, connectId, restTs, restNonce, restSignature);
     }
 
-    private static String fillTheParams() {
+    /**
+     *
+     * Fills in the parameters. The requested time range is set to 1 month
+     * @param groupBy
+     * @return the String containing required parameters
+     **/
+    private static String fillTheParams(String groupBy) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date now = new Date();
         String toDate = sdf.format(addDays(now, -1));
         String fromDate = sdf.format(addDays(now, -31));
-        return MessageFormat.format(params, fromDate, toDate);
+        return MessageFormat.format(params, groupBy, fromDate, toDate);
     }
-
 
     /**
      * Generates a nonce for REST requests
