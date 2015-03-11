@@ -22,21 +22,21 @@ public class AdvertiserClient {
 
     private final static String APP_URL = "https://advertiser.api.zanox.com/advertiser-api/report";
     private final static String BASE_REST_APP = "/2015-03-01/program/";
-    private final static String PROGRAM_ID = "1803";
-    private final static int ARGUMENTS_NUMBER = 3;
+    private final static int ARGUMENTS_NUMBER = 4;
     private static String params = "?groupby={0}&fromdate={1}&todate={2}";
     private static String auth = "&connectid={0}&date={1}&nonce={2}&signature={3}";
 
     public static void main(String[] args) throws GeneralSecurityException {
 
         if (args.length != ARGUMENTS_NUMBER) {
-            System.err.println("Wrong number of arguments. Correct usage: java -jar advertiser-api-client-1.0-SNAPSHOT.jar CONNECT_ID SECRET_KEY GROUP_BY");
+            System.err.println("Wrong number of arguments. Correct usage: java -jar advertiser-api-client-1.0-SNAPSHOT.jar PROGRAM_ID CONNECT_ID SECRET_KEY GROUP_BY");
             System.exit(1);
         }
 
-        String connectId = args[0];
-        String secretKey = args[1];
-        String groupBy   = args[2];
+        String programId = args[0];
+        String connectId = args[1];
+        String secretKey = args[2];
+        String groupBy   = args[3];
 
         if (!isGroupByValid(groupBy)) {
             groupBy = "day";
@@ -45,9 +45,9 @@ public class AdvertiserClient {
         Client client = ClientBuilder.newBuilder().register(JacksonJsonProvider.class).build();
 
         params = fillTheParams(groupBy);
-        auth = fillTheAuthorization(connectId, secretKey);
+        auth = fillTheAuthorization(programId, connectId, secretKey);
 
-        WebTarget target = client.target(APP_URL + BASE_REST_APP + PROGRAM_ID + params + auth);
+        WebTarget target = client.target(APP_URL + BASE_REST_APP + programId + params + auth);
 
         Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
 
@@ -70,10 +70,10 @@ public class AdvertiserClient {
      * @throws GeneralSecurityException
      */
 
-    private static String fillTheAuthorization(String connectId, String secretKey) throws GeneralSecurityException {
+    private static String fillTheAuthorization(String programId, String connectId, String secretKey) throws GeneralSecurityException {
         String restTs = getRestTimestamp();
         String restNonce = generateNonce();
-        String restSignature = getRestSignature("GET", BASE_REST_APP + PROGRAM_ID, restTs, restNonce, secretKey);
+        String restSignature = getRestSignature("GET", BASE_REST_APP + programId, restTs, restNonce, secretKey);
         return MessageFormat.format(auth, connectId, restTs, restNonce, restSignature);
     }
 
