@@ -28,8 +28,8 @@ import java.util.*;
 
 public class AdvertiserClient {
 
-    private final static String APP_URL = "https://advertiser.api.zanox.com/advertiser-api/report";
-    private final static String BASE_REST_APP = "/2015-03-01/program/";
+    private final static String APP_URL = "https://advertiser.api.zanox.com/advertiser-api/2015-03-01";
+    private final static String BASE_REST_APP = "/report/program/";
     private final static int ARGUMENTS_NUMBER = 5;
     private static String params = "?groupby={0}&fromdate={1}&todate={2}";
     private static String auth = "&connectid={0}&date={1}&nonce={2}&signature={3}";
