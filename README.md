@@ -2,10 +2,9 @@
 A Java Client for Advertiser API
 
 #Before using
-To use the code for obtaining the data for your program you need to edit the authentication information and groupBy parameter
+To use the code for obtaining the data for your program you need to obtain the authentication information first:
 * CONNECT_ID
 * SECRET_KEY
-* GROUP_BY  
 Ask your Zanox contact person for your credentials.
 
 #Build
