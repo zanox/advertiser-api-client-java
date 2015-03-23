@@ -157,8 +157,7 @@ public class AdvertiserClient {
      * Generates a signature for a REST API request
      *
      * @param httpVerb  GET, POST, PUT or DELETE
-     * @param uri       resource URI that follows API version date 2011-03-01. e.g. for http://api.zanox.com/xml/2011-03-01/adspaces URL, use /adspaces as
-     *                  URI
+     * @param uri       resource URI that follows API version 2015-03-01: https://advertiser.api.zanox.com/advertiser-api/2015-03-01 URL, use /report/program/ as URI
      * @param timestamp timestamp string for REST authentication
      * @param nonce     nonce
      * @param secretKey your secret key
