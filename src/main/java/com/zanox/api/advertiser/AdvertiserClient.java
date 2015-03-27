@@ -72,7 +72,7 @@ public class AdvertiserClient {
     }
 
     private static boolean isGroupByValid(String groupBy) {
-        List<String> validGroupByList = Arrays.asList("day", "month", "adspace", "admedium");
+        List<String> validGroupByList = Arrays.asList("day", "month", "adspace", "admedium", "admedium,adspace", "adspace,admedium");
         return validGroupByList.contains(groupBy);
     }
 
