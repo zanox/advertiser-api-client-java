@@ -12,7 +12,6 @@ mvn install
 
 #Run
 **Get report data:**
-
 java -jar target/advertiser-api-client-1.0-SNAPSHOT.jar  --[header|url] reportservice PROGRAM_ID CONNECT_ID SECRET_KEY GROUP_BY
 
 e.g.
@@ -20,7 +19,6 @@ java -jar target/advertiser-api-client-1.0-SNAPSHOT.jar --header reportservice 1
 
 
 **Get partnercode details:**
-
 java -jar target/advertiser-api-client-1.0-SNAPSHOT.jar  --[header|url] partnercodeservice CONNECT_ID SECRET_KEY COMMA_SEPARATED_LIST_OF_PARTNERCODES
 
 e.g.
