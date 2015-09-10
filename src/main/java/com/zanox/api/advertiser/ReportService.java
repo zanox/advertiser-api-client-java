@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ReportService implements RestService {
-	private final static String BASE_REST_URL = "/report/program/";
+	private final static String BASE_REST_URL = "/report/program/{0}";
 	private final static int ARGUMENTS_NUMBER = 6;
 	private static String REPORT_PARAMS = "?groupby={0}&fromdate={1}&todate={2}";
 	private String programId;
@@ -33,17 +33,17 @@ public class ReportService implements RestService {
 
 	@Override
 	public String getBaseRestUrl() {
-		return BASE_REST_URL + programId + getReportParams();
+		return MessageFormat.format(BASE_REST_URL, programId) + getReportParams();
 	}
 
 	@Override
 	public String getAuthorizationParams() throws GeneralSecurityException, UnsupportedEncodingException {
-		return AuthenticationUtil.createAuthorizationUrlParams(BASE_REST_URL + programId, this.connectId, this.secretKey);
+		return AuthenticationUtil.createAuthorizationUrlParams(MessageFormat.format(BASE_REST_URL, programId), this.connectId, this.secretKey);
 	}
 
 	@Override
 	public MultivaluedMap<String, Object> getAuthorizationHeaders() throws GeneralSecurityException, UnsupportedEncodingException{
-		return AuthenticationUtil.createAuthorizationHeaders(BASE_REST_URL + programId, this.connectId, this.secretKey);
+		return AuthenticationUtil.createAuthorizationHeaders(MessageFormat.format(BASE_REST_URL, programId), this.connectId, this.secretKey);
 	}
 
 	private String getReportParams() {

@@ -19,7 +19,6 @@ import java.security.GeneralSecurityException;
 public class AdvertiserClient {
 
     private static final String APP_URL = "https://advertiser.api.zanox.com/advertiser-api/2015-03-01";
-    private static final int STATUS_OK = 200;
 
     public static void main(String... args)  {
         String authType = args[0];
@@ -44,10 +43,12 @@ public class AdvertiserClient {
             ex.printStackTrace();
         }
 
-        System.out.println("Response status:" + response.getStatus());
-        if(response.getStatus() == STATUS_OK) {
+        if(Response.Status.fromStatusCode(response.getStatus()) == Response.Status.OK) {
             JsonNode json = response.readEntity(JsonNode.class);
             System.out.println("Response:" + json);
+        }
+        else {
+            System.out.println("Something went wrong while querying the service: " + serviceType + ", response code was: " + response.getStatus());
         }
     }
 
