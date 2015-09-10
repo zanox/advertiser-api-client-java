@@ -11,14 +11,14 @@ You can find this information in the zanox UI under "Links & Tools" -> "API Cred
 mvn install
 
 #Run
-**Get report data:**
+**Get report data:**<br />
 java -jar target/advertiser-api-client-1.0-SNAPSHOT.jar  --[header|url] reportservice PROGRAM_ID CONNECT_ID SECRET_KEY GROUP_BY
 
 e.g.
 java -jar target/advertiser-api-client-1.0-SNAPSHOT.jar --header reportservice 1803 476F47B42F2819102E7A a9A63Af80b9D47+8ae84a3929776ba/9479fCE46 day
 
 
-**Get partnercode details:**
+**Get partnercode details:**<br />
 java -jar target/advertiser-api-client-1.0-SNAPSHOT.jar  --[header|url] partnercodeservice CONNECT_ID SECRET_KEY COMMA_SEPARATED_LIST_OF_PARTNERCODES
 
 e.g.
