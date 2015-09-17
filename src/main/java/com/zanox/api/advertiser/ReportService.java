@@ -10,9 +10,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/*
+* Example service for querying report data..
+* */
 public class ReportService implements RestService {
 	private final static String BASE_REST_URL = "/report/program/{0}";
-	private final static int ARGUMENTS_NUMBER = 6;
+	private final static int SERVICE_ARGUMENTS = 4;
 	private static String REPORT_PARAMS = "?groupby={0}&fromdate={1}&todate={2}";
 	private String programId;
 	private String connectId;
@@ -20,15 +23,15 @@ public class ReportService implements RestService {
 	private String groupBy;
 
 	public ReportService(String... args) {
-		if (args.length != ARGUMENTS_NUMBER) {
-			System.err.println("Wrong number of arguments. Correct usage: java -jar advertiser-api-client-1.0-SNAPSHOT.jar --[header|url] SERVICETYPE PROGRAM_ID CONNECT_ID SECRET_KEY GROUP_BY");
+		if (args.length != SERVICE_ARGUMENTS) {
+			System.err.println("Wrong number of arguments. Correct usage: java -jar advertiser-api-client-1.0-SNAPSHOT.jar --[header|url] SERVICE_TYPE PROGRAM_ID CONNECT_ID SECRET_KEY GROUP_BY");
 			System.exit(1);
 		}
 
-		this.programId = args[2];
-		this.connectId = args[3];
-		this.secretKey = args[4];
-		this.groupBy = args[5];
+		this.programId = args[0];
+		this.connectId = args[1];
+		this.secretKey = args[2];
+		this.groupBy = args[3];
 	}
 
 	@Override

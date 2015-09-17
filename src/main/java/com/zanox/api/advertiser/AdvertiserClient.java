@@ -11,26 +11,30 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 
 /*
 * Client for zanox REST Advertiser API that authorizes with query parameters.
 * */
-
 public class AdvertiserClient {
 
     private static final String APP_URL = "https://advertiser.api.zanox.com/advertiser-api/2015-03-01";
 
     public static void main(String... args)  {
+        if (args.length < 2) {
+            System.err.println("Wrong number of arguments.");
+            System.exit(1);
+        }
         String authType = args[0];
         String serviceType = args[1];
 
         RestService restService;
         switch(serviceType) {
             case "reportservice" :
-                restService = new ReportService(args);
+                restService = new ReportService(Arrays.copyOfRange(args, 2, args.length));
                 break;
             case "partnercodeservice" :
-                restService = new PartnerCodeService(args);
+                restService = new PartnerCodeService(Arrays.copyOfRange(args, 2, args.length));
                 break;
             default:
                 throw new IllegalArgumentException("Wrong serviceType set, valid values are [reportservice, partnercodeservice]");
@@ -43,7 +47,7 @@ public class AdvertiserClient {
             ex.printStackTrace();
         }
 
-        if(Response.Status.fromStatusCode(response.getStatus()) == Response.Status.OK) {
+        if(Response.Status.OK == Response.Status.fromStatusCode(response.getStatus())) {
             JsonNode json = response.readEntity(JsonNode.class);
             System.out.println("Response:" + json);
         }
